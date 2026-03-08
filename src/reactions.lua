@@ -1,4 +1,22 @@
 
+--------------------------
+function Reactions(sprites)
+    for i=1,#sprites do
+		local s = sprites[i]
+
+		s:Reaction()
+	end
+end
+--------------------------
+function ClampTowardZero(v)
+	if v > 0 then
+		return math.floor(v)
+	elseif v < 0 then
+		return math.ceil(v)
+	end
+	return 0
+end
+--------------------------
 function StopOnHit(self, hit)
 	local moveX = self.dx
 	local moveY = self.dy
@@ -17,7 +35,7 @@ function StopOnHit(self, hit)
 	end
 	return moveX, moveY
 end
-
+--------------------------
 function PlayerReaction(self)
 	local moveX = self.dx
     local moveY = self.dy
@@ -46,6 +64,7 @@ function PlayerReaction(self)
     self.x = self.x + self.dx
     self.y = self.y + self.dy
 end
+--------------------------
 function BlockReaction(self)
 	local moveX = self.dx
     local moveY = self.dy

@@ -33,15 +33,6 @@ UsersKeyMap={
  {-24,-25,-26,-27,-28,-29,-30,-31}
 }
 
-function ClampTowardZero(v)
-	if v > 0 then
-		return math.floor(v)
-	elseif v < 0 then
-		return math.ceil(v)
-	end
-	return 0
-end
-
 function Init()
  TICK_CNT=1
  Sprites[1]={
@@ -241,7 +232,6 @@ function TIC()
 	--trace("------------------------")
 	--trace("TICK: "..TICK_CNT)
 	--trace("------------------------")
-	cls(0)
 	--Grid_Current
 	--Action
 	--Grid_Next
@@ -257,11 +247,9 @@ function TIC()
 	Actions(nil,Sprites)
 	BuildNextGrid(Sprites)
 	Check_collisions(Sprites, true)
-	for i=1,#Sprites do
-		local s = Sprites[i]
-		
-		s:Reaction()
-	end
+	
+	
+	cls(0)
 	--Reactions()
 	DrawSprites()
 	print("DYN - EventsNext: "..#Sprites[8].eventsNext)

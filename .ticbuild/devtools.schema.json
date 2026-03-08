@@ -1,0 +1,567 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://thenfour.com/schemas/ticbuild/devtools.schema.json",
+  "title": "ticbuild devtools.json",
+  "type": "object",
+  "properties": {
+    "watches": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "global"
+              },
+              "symbol": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "type",
+              "symbol"
+            ],
+            "additionalProperties": true
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "expression"
+              },
+              "expression": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "type",
+              "expression"
+            ],
+            "additionalProperties": true
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "const": "memory"
+              },
+              "expression": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "type",
+              "expression"
+            ],
+            "additionalProperties": true
+          }
+        ]
+      }
+    },
+    "controlSurfaceRoot": {
+      "type": "array",
+      "nullable": true,
+      "items": {
+        "$ref": "#/$defs/controlNode"
+      }
+    }
+  },
+  "required": [],
+  "additionalProperties": true,
+  "$defs": {
+    "controlNode": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "knob"
+            },
+            "label": {
+              "type": "string"
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1
+            },
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            },
+            "step": {
+              "type": "number"
+            },
+            "size": {
+              "type": "string",
+              "enum": [
+                "small",
+                "medium",
+                "large"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "symbol"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "triggerButton"
+            },
+            "label": {
+              "type": "string"
+            },
+            "eval": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "type",
+            "eval"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "slider"
+            },
+            "label": {
+              "type": "string"
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1
+            },
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            },
+            "step": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "symbol"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "xy"
+            },
+            "label": {
+              "type": "string"
+            },
+            "size": {
+              "type": "string",
+              "enum": [
+                "small",
+                "medium",
+                "large"
+              ]
+            },
+            "x": {
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "min": {
+                  "type": "number"
+                },
+                "max": {
+                  "type": "number"
+                },
+                "step": {
+                  "type": "number"
+                },
+                "center": {
+                  "type": "number"
+                },
+                "size": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "symbol"
+              ],
+              "additionalProperties": true
+            },
+            "y": {
+              "type": "object",
+              "properties": {
+                "symbol": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "min": {
+                  "type": "number"
+                },
+                "max": {
+                  "type": "number"
+                },
+                "step": {
+                  "type": "number"
+                },
+                "center": {
+                  "type": "number"
+                },
+                "size": {
+                  "type": "number"
+                }
+              },
+              "required": [
+                "symbol"
+              ],
+              "additionalProperties": true
+            }
+          },
+          "required": [
+            "type",
+            "x",
+            "y"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "toggle"
+            },
+            "label": {
+              "type": "string"
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "type",
+            "symbol"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "page"
+            },
+            "label": {
+              "type": "string"
+            },
+            "controls": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/controlNode"
+              }
+            }
+          },
+          "required": [
+            "type",
+            "controls"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "group"
+            },
+            "label": {
+              "type": "string"
+            },
+            "orientation": {
+              "type": "string",
+              "enum": [
+                "horizontal",
+                "vertical"
+              ]
+            },
+            "controls": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/controlNode"
+              }
+            }
+          },
+          "required": [
+            "type",
+            "controls"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "row"
+            },
+            "controls": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/controlNode"
+              }
+            }
+          },
+          "required": [
+            "type",
+            "controls"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "column"
+            },
+            "controls": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/controlNode"
+              }
+            }
+          },
+          "required": [
+            "type",
+            "controls"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "divider"
+            }
+          },
+          "required": [
+            "type"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "enumButtons"
+            },
+            "label": {
+              "type": "string"
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": [
+                      "string",
+                      "number"
+                    ]
+                  }
+                },
+                "required": [
+                  "value"
+                ]
+              }
+            }
+          },
+          "required": [
+            "type",
+            "symbol",
+            "options"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "label"
+            },
+            "label": {
+              "type": "string"
+            },
+            "expression": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "type",
+            "expression"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "number"
+            },
+            "label": {
+              "type": "string"
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1
+            },
+            "min": {
+              "type": "number"
+            },
+            "max": {
+              "type": "number"
+            },
+            "step": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "type",
+            "symbol"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "symbol": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "type",
+            "symbol"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "tabs"
+            },
+            "tabs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "controls": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/$defs/controlNode"
+                    }
+                  }
+                },
+                "required": [
+                  "controls"
+                ]
+              }
+            }
+          },
+          "required": [
+            "type",
+            "tabs"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "type": {
+              "const": "scope"
+            },
+            "label": {
+              "type": "string"
+            },
+            "rateHz": {
+              "type": "number"
+            },
+            "range": {
+              "type": "string",
+              "enum": [
+                "autoUnified",
+                "autoPerSeries"
+              ]
+            },
+            "width": {
+              "type": "number"
+            },
+            "height": {
+              "type": "number"
+            },
+            "series": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "expression": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "min": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "expression"
+                ],
+                "additionalProperties": true
+              }
+            }
+          },
+          "required": [
+            "type",
+            "series"
+          ]
+        }
+      ]
+    }
+  }
+}

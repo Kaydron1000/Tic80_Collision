@@ -1,0 +1,112 @@
+{
+  "$schema": "./devtools.schema.json",
+  "watches": [],
+  "controlSurfaceRoot": [
+    {
+      "type": "xy",
+      "label": "p-xy",
+      "x": {
+        "symbol": "Sprites[1].x",
+        "min": 0,
+        "max": 240,
+        "step": 1,
+        "size": 240
+      },
+      "y": {
+        "symbol": "Sprites[1].y",
+        "min": 0,
+        "max": 136,
+        "step": 1,
+        "size": 136,
+        "center": 136
+      }
+    },
+    {
+      "type": "slider",
+      "label": "speed",
+      "symbol": "Sprites[1].spd",
+      "min": 0,
+      "max": 2,
+      "step": 0.01
+    },
+    {
+      "type": "slider",
+      "label": "SpeedFast",
+      "symbol": "Sprites[1].spd",
+      "min": 0,
+      "max": 20,
+      "step": 1
+    },
+    {
+      "type": "column",
+      "controls": [
+        {
+          "type": "row",
+          "controls": []
+        },
+        {
+          "type": "row",
+          "controls": [
+            {
+              "type": "number",
+              "label": "xr -- ",
+              "symbol": "Sprites[8].xr + Sprites[8].x",
+              "min": 0,
+              "max": 100,
+              "step": 0.1
+            }
+          ]
+        },
+        {
+          "type": "row",
+          "controls": [
+            {
+              "type": "number",
+              "label": "yt -- ",
+              "symbol": "Sprites[8].yt + Sprites[8].y",
+              "min": 0,
+              "max": 100,
+              "step": 0.1
+            }
+          ]
+        },
+        {
+          "type": "row",
+          "controls": [
+            {
+              "type": "number",
+              "label": "yb -- ",
+              "symbol": "Sprites[8].yb + Sprites[8].y",
+              "min": 0,
+              "max": 100,
+              "step": 0.1
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "label": "Player",
+          "orientation": "horizontal",
+          "controls": [
+            {
+              "type": "number",
+              "label": "a",
+              "symbol": "a",
+              "min": 0,
+              "max": 100,
+              "step": 0.1
+            },
+            {
+              "type": "number",
+              "label": "y",
+              "symbol": "Sprites[1].y",
+              "min": 0,
+              "max": 100,
+              "step": 0.1
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

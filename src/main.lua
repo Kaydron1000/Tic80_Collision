@@ -1,3 +1,5 @@
+--#define DEBUG true
+--------------------------
 --#include "actions.lua"
 --#include "collisions.lua"
 --#include "grid.lua"
@@ -229,6 +231,7 @@ Init()
 
 function TIC()
 	TICK_CNT=TICK_CNT+1
+	cls(0)
 	--trace("------------------------")
 	--trace("TICK: "..TICK_CNT)
 	--trace("------------------------")
@@ -247,9 +250,8 @@ function TIC()
 	Actions(nil,Sprites)
 	BuildNextGrid(Sprites)
 	Check_collisions(Sprites, true)
+	Reactions(Sprites)
 	
-	
-	cls(0)
 	--Reactions()
 	DrawSprites()
 	print("DYN - EventsNext: "..#Sprites[8].eventsNext)

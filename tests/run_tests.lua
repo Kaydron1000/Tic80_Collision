@@ -6,9 +6,15 @@ local function fail(msg)
   os.exit(1)
 end
 
+local function pass(msg)
+  io.stderr:write("PASS: " .. msg .. "\n")
+end
+
 local function assertEq(actual, expected, msg)
   if actual ~= expected then
     fail((msg or "assertEq failed") .. ("\n  expected: %s\n  actual:   %s"):format(tostring(expected), tostring(actual)))
+  else
+    pass((msg or "assertEq passed")..("\n  expected: %s\n  actual:   %s"):format(tostring(expected), tostring(actual)))
   end
 end
 

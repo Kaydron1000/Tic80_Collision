@@ -1,4 +1,33 @@
+function BuildDepencyTree(sprites)
+    local tree = {}
+    for i=1,#sprites do
+        local s = sprites[i]
+        tree[s] = {}
+    end
+    for i=1,#sprites do
+        local s = sprites[i]
+        for sp, e in pairs(s.eventsNext) do
+            table.insert(tree[sp], s)
+        end
+    end
+    return tree
+end
+function ClampTowardZero(v)
+	if v > 0 then
+		return math.floor(v)
+	elseif v < 0 then
+		return math.ceil(v)
+	end
+	return 0
+end
 
+function Reactions(sprites)
+    	for i=1,#sprites do
+		local s = sprites[i]
+
+		s:Reaction()
+	end
+end
 function StopOnHit(self, hit)
 	local moveX = self.dx
 	local moveY = self.dy

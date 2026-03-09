@@ -1,3 +1,5 @@
+--#define DEBUG true
+---------
 --#include "actions.lua"
 --#include "collisions.lua"
 --#include "grid.lua"

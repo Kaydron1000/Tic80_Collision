@@ -62,7 +62,7 @@ end
 
 -- Test Swept_aabb: moving into a block from left
 do
-  local a = box(0, 0, 0, 10, 0, 10, 10, 0)     -- moves right by 10
+  local a = box(0, 0, 0, 10, 0, 10, 20, 0)     -- moves right by 10
   local b = box(25, 0, 0, 10, 0, 10, 0, 0)     -- static block
   local hit = Swept_aabb(a, b)
   assertTrue(hit ~= nil, "Swept_aabb should detect a hit")

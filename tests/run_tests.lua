@@ -37,30 +37,99 @@ dofile("src/collisions.lua")
 do
   local hit = { t_entry=0.25, t_exit=0.75, enx=1, eny=-1, xnx=1, xny=-1 }
   local m = MirrorHit(hit)
-  assertEq(m.t_entry, 0.25, "MirrorHit t_entry")
-  assertEq(m.t_exit, 0.75, "MirrorHit t_exit")
-  assertEq(m.enx, -1, "MirrorHit enx")
-  assertEq(m.eny, 1, "MirrorHit eny")
-  assertEq(m.xnx, -1, "MirrorHit xnx")
-  assertEq(m.xny, 1, "MirrorHit xny")
+  
+  assertTrue(m ~= nil, "MirrorHit should not return nil if valid hit sent")
+  if m then
+    assertEq(m.t_entry, 0.25, "MirrorHit t_entry")
+    assertEq(m.t_exit, 0.75, "MirrorHit t_exit")
+    assertEq(m.enx, -1, "MirrorHit enx")
+    assertEq(m.eny, 1, "MirrorHit eny")
+    assertEq(m.xnx, -1, "MirrorHit xnx")
+    assertEq(m.xny, 1, "MirrorHit xny")
+  end
 end
 
 -- Helpers to build AABBs like your code expects
 local function box(x, y, xl, xr, yt, yb, dx, dy)
   return { x=x, y=y, xl=xl, xr=xr, yt=yt, yb=yb, dx=dx or 0, dy=dy or 0 }
 end
+--NONE=1
+--TOUCHING=2
+--ENGULF=4
+--INTERSECTING=8
+--AXIS_NONE=16
+--AXIS_TOUCHING=32
+--AXIS_CONTAINS=64
+--AXIS_OVERLAP=128
+
+-- Test AABB: touching
+do
+  --  |----|----|
+  --  |    |    |
+  --  |    |    |
+  --  |----|----|
+  --box: x=0, y=0, xl=0, xr=10, yt=0, yb=10
+  local a = box(0, 0, 0, 10, 0, 10)
+  local b = box(10, 0, 0, 10, 0, 10) -- touches at x=10
+  local rslt = AABB(a, b)
+  assertEq(rslt, TOUCHING, "AABB TOUCHING when edges meet")
+end
+
+-- Test AABB: NONE
+do
+  --  |----|  |----|
+  --  |    |  |    |
+  --  |    |  |    |
+  --  |----|  |----|
+  --box: x=0, y=0, xl=0, xr=5, yt=0, yb=10
+  local a = box(0, 0, 0, 5, 0, 10)
+  local b = box(10, 0, 0, 10, 0, 10)
+  local rslt = AABB(a, b)
+  assertEq(rslt, NONE, "AABB NONE when edges do not meet")
+end
+
+-- Test AABB: ENGULF
+do
+  --  |----------|
+  --  |   |--|   |
+  --  |   |  |   |
+  --  |   |--|   |
+  --  |----------|
+  --box: x=0, y=0, xl=0, xr=5, yt=0, yb=10
+  local a = box(0, 0, 0, 10, 0, 10)
+  local b = box(2, 2, 0, 2, 0, 2)
+  local rslt = AABB(a, b)
+  assertEq(rslt, ENGULF, "AABB ENGULF when one box is inside another")
+end
+
+-- Test AABB: INTERSECTING
+do
+  --  |-------|
+  --  |   |------|
+  --  |   |      |
+  --  |   |------|
+  --  |-------|
+  --box: x=0, y=0, xl=0, xr=5, yt=0, yb=10
+  local a = box(0, 0, 0, 10, 0, 10)
+  local b = box(8, 2, 0, 5, 0, 2)
+  local rslt = AABB(a, b)
+  assertEq(rslt, INTERSECTING, "AABB INTERSECTING when boxes overlap but not engulfed")
+end
 
 -- Test AABB_axis / AABB: no overlap
 do
+  --box: x=0, y=0, xl=0, xr=10, yt=0, yb=10
   local a = box(0, 0, 0, 10, 0, 10)
   local b = box(30, 0, 0, 10, 0, 10)
   local c = AABB_axis(a, b)
   assertEq(c.x, AXIS_NONE, "AABB_axis x none")
   assertEq(AABB(a, b), NONE, "AABB NONE when separated")
 end
+---------
 
 -- Test AABB: touching
 do
+  --box: x=0, y=0, xl=0, xr=10, yt=0, yb=10
   local a = box(0, 0, 0, 10, 0, 10)
   local b = box(10, 0, 0, 10, 0, 10) -- touches at x=10
   assertEq(AABB(a, b), TOUCHING, "AABB TOUCHING when edges meet")
@@ -83,8 +152,10 @@ do
   local b = box(18, 0, 0, 10, 0, 10, 0, 0)
   local hit = Swept_aabb(a, b)
   assertTrue(hit ~= nil, "Swept_aabb should detect a hit (within frame)")
-  assertTrue(hit.t_entry >= 0 and hit.t_entry <= 1, "t_entry should be within [0,1]")
-  assertEq(hit.enx, -1, "Expected collision normal enx = -1 (hit b from left)")
+  if hit then
+    assertTrue(hit.t_entry >= 0 and hit.t_entry <= 1, "t_entry should be within [0,1]")
+    assertEq(hit.enx, -1, "Expected collision normal enx = -1 (hit b from left)")
+  end
 end
 
 print("OK: all tests passed")
